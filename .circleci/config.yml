@@ -8,7 +8,15 @@ jobs:
         environment:
           BUNDLE_PATH: vendor/bundle
           RAILS_ENV: test
-      - image: selenium/standalone-chrome
+      - image: selenium/hub
+        ports:
+          - "4444:4444"
+        container_name: hub
+      - image: selenium/standalone-chrome-debug
+        environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+      
     steps:
       - checkout
       # Restore bundle cache
