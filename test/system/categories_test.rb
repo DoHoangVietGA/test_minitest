@@ -16,7 +16,7 @@ class CategoriesTest < ApplicationSystemTestCase
   test "get selector" do
     visit categories_url
 
-    assert_selector "h1", text: "VH2"
+    assert_selector "h1", text: "VH1"
   end
 
   # test "compare header of dashboard page" do
