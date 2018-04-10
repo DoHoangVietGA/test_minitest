@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    working_directory: ~/minitest
+    docker:
+      - image: circleci/ruby:2.4-node
+        environment:
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
+      - image: selenium/standalone-chrome-debug
+    steps:
+      - checkout
+      # Restore bundle cache
+      - type: cache-restore
+        name: Restore bundle cache
+        key: renosy_insight_server-bundle-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      # Ruby 2.4.2: failing after latest update
+      # issue: https://discuss.circleci.com/t/ruby-2-4-2-failing-after-latest-update/17855/2
+      # If the issue fixed, please revert this commit
+      - run:
+          name: Bundle Install
+          command: bundle install --path vendor/bundle
+
+      # Store bundle cache
+      - type: cache-save
+        name: Store bundle cache
+        key: minitest-bundle-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Database setup
+      - run: rails db:create db_setup:generate db:migrate
+
+      - run:
+          name: Assets compile
+          command: rails assets:precompile
+
+      # Run minitest
+      - type: shell
+        command: bundle exec rake test
+
+      # Run minitest system test
+      - type: shell
+        command: bundle exec rake test:system
+
