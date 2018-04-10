@@ -8,9 +8,7 @@ jobs:
         environment:
           BUNDLE_PATH: vendor/bundle
           RAILS_ENV: test
-      - image: selenium/standalone-chrome-debug
-        volumes:
-          - /dev/shm:/dev/shm
+      - image: selenium/standalone-chrome
     steps:
       - checkout
       # Restore bundle cache
