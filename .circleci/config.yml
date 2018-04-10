@@ -47,8 +47,8 @@ jobs:
           command: rails assets:precompile
 
       # Run minitest
-      - type: shell
-        command: bundle exec rake test
+      # - type: shell
+      #   command: bundle exec rake test
 
       # Run minitest system test
       - type: shell
