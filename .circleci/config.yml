@@ -4,31 +4,42 @@ jobs:
     parallelism: 1
     working_directory: ~/minitest
     docker:
-      - image: circleci/ruby:2.4-node
+      # - image: circleci/ruby:2.4-node
+      - image: hirokishiraiga/akjfnlixehfcao:0.0.4
         environment:
           BUNDLE_PATH: vendor/bundle
           RAILS_ENV: test
       # - image: selenium/hub
       #   ports:
       #     - "4444:4444"
-      #   container_name: hub
+      #   # container_name: hub
+      #   links:
+      #     - links
       # - image: selenium/standalone-chrome
-      #   environment:
-      #   - HUB_PORT_4444_TCP_ADDR=hub
-      #   - HUB_PORT_4444_TCP_PORT=4444
+        # volumes:
+        #   - /dev/urandom:/dev/random
+        # depends_on:
+        #   - hub
+        # environment:
+        #   - HUB_PORT_4444_TCP_ADDR=hub
+        #   - HUB_PORT_4444_TCP_PORT=4444
       
     steps:
       - checkout
       
-      - run:
-          name: Install phantomjs
-          command: |
-            cd /usr/local/share
-            sudo wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 
-            sudo tar xjf phantomjs-2.1.1-linux-x86_64.tar.bz2 
-            sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/share/phantomjs 
-            sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs 
-            sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
+      # - run: 
+      #     name: Install chromedriver
+      #     command: sudo apt-get install chromedriver
+
+      # - run: sudo apt-get install chromedriver
+      #     name: Install phantomjs
+      #     command: |
+      #       cd /usr/local/share
+      #       sudo wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 
+      #       sudo tar xjf phantomjs-2.1.1-linux-x86_64.tar.bz2 
+      #       sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/share/phantomjs 
+      #       sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs 
+      #       sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
 
       # Restore bundle cache
       - type: cache-restore
